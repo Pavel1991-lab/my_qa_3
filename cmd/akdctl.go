@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"yourmodule/internal"  // заменяй yourmodule на имя своего модуля
+	"akd-control/internal"  
 )
 
 func main() {
