@@ -15,7 +15,7 @@ func main() {
 	cmdFlag := flag.String("cmd", "", "Команда для akd: start, stop, standup, standstop, standown")
 	flag.Parse()
 
-	if *cmdFlag != "start" && *cmdFlag != "stop" && *cmdFlag != "standup" && *cmdFlag != "standown" && *cmdFlag != "standstop" {
+	if *cmdFlag != "start" && *cmdFlag != "stop" && *cmdFlag != "standup" && *cmdFlag != "standown" && *cmdFlag != "standstop" && *cmdFlag != "clenar" {
 		fmt.Println("Ошибка: допустимые команды — start, stop, standup, standstop, standown")
 		flag.Usage()
 		os.Exit(1)
@@ -99,5 +99,12 @@ func main() {
 			}
 			fmt.Println("Контейнеры и тома успешно удалены.")
 		}
+	case "clenar":
+		binaryPath := "/opt/cleaner/cliner.sh"
+		if err := internal.RunCommand(binaryPath); err != nil {
+			fmt.Println("Ошибка запуска:", err)
+			os.Exit(1)
+		}
+		fmt.Println("Платформа успешно запущена.")
 	}
 }
