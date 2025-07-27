@@ -18,6 +18,7 @@ func RunCommand(binaryPath string, args ...string) error {
 
 	fmt.Printf("Запускаем команду: %s %s\n\n", binaryPath, args)
 
+	// Запускаем бинарь по указаному пути и передаем если нужно команды
 	cmd := exec.Command(binaryPath, args...)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
