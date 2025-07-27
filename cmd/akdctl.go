@@ -4,8 +4,10 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"strings"
 
-	"akd-control/internal"  
+	"akdctl/configs" // импортируем пакет с менеджером конфигов
+	"akdctl/internal"
 )
 
 func main() {
@@ -20,10 +22,35 @@ func main() {
 
 	binaryPath := "/opt/MarketingPlatform/akd"
 
-	if err := internal.RunCommand(binaryPath, *cmdFlag); err != nil {
-		fmt.Println(err)
+	if *cmdFlag == "start" {
+		// Используем configs.NewConfigManager с префиксом configs
+		cm, err := configs.NewConfigManager("/opt/configs")
+		if err != nil {
+			fmt.Println("Ошибка загрузки конфигов:", err)
+			os.Exit(1)
+		}
+
+		configArg, err := cm.Select()
+		if err != nil {
+			fmt.Println("Ошибка выбора конфига:", err)
+			os.Exit(1)
+		}
+
+		args := append([]string{"start"}, strings.Split(configArg, " ")...)
+
+		if err := internal.RunCommand(binaryPath, args...); err != nil {
+			fmt.Println("Ошибка запуска:", err)
+			os.Exit(1)
+		} else {
+			fmt.Println("Платформа успешно запущена.")
+		}
+		return
+	}
+
+	if err := internal.RunCommand(binaryPath, "stop"); err != nil {
+		fmt.Println("Ошибка остановки:", err)
 		os.Exit(1)
 	} else {
-		fmt.Println("\nКоманда выполнена успешно.")
+		fmt.Println("Платформа успешно остановлена.")
 	}
 }

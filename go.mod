@@ -1,3 +1,3 @@
-module akd-control
+module akdctl
 
 go 1.21.5
